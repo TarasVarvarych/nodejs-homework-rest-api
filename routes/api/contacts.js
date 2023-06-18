@@ -9,14 +9,14 @@ router.get("/", ctrl.getAllContacts);
 
 router.get("/:contactId", isValidId, ctrl.getOneContactById);
 
-router.post("/", ctrl.addOneContact);
+router.post("/", validateBody(shemas.addContactShema), ctrl.addOneContact);
 
 router.delete("/:contactId", isValidId, ctrl.deleteContact);
 
 router.put(
   "/:contactId",
   isValidId,
-  validateBody(shemas.addContactShema),
+  validateBody(shemas.updateFavoriteShema),
   ctrl.updateContact
 );
 router.patch("/:contactId/favorite", isValidId, ctrl.updateFavoriteContact);

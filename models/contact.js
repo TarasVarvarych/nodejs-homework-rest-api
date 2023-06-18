@@ -28,9 +28,9 @@ const addContactShema = Joi.object({
   phone: Joi.string()
     .pattern(/^\(\d{3}\) \d{3}-\d{4}$/)
     .required(),
-  favorite: Joi.boolean,
+  favorite: Joi.boolean(),
 });
-
-const shemas = { addContactShema };
+const updateFavoriteShema = Joi.object({ favorite: Joi.boolean().required() });
+const shemas = { addContactShema, updateFavoriteShema };
 const Contact = model("contact", contactSchema);
 module.exports = { Contact, shemas };
