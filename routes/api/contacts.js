@@ -16,9 +16,14 @@ router.delete("/:contactId", isValidId, ctrl.deleteContact);
 router.put(
   "/:contactId",
   isValidId,
-  validateBody(shemas.updateFavoriteShema),
+  validateBody(shemas.addContactShema),
   ctrl.updateContact
 );
-router.patch("/:contactId/favorite", isValidId, ctrl.updateFavoriteContact);
+router.patch(
+  "/:contactId/favorite",
+  isValidId,
+  validateBody(shemas.updateFavoriteShema),
+  ctrl.updateFavoriteContact
+);
 
 module.exports = router;
