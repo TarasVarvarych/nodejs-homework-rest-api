@@ -44,7 +44,17 @@ const loginSchema = Joi.object({
 const subscriptionSchema = Joi.object({
   subscription: Joi.string().valid("starter", "pro", "business").required(),
 });
-const schemas = { registerSchema, loginSchema, subscriptionSchema };
+
+const avatarSchema = Joi.object({
+  avatarURL: Joi.string().required(),
+});
+
+const schemas = {
+  registerSchema,
+  loginSchema,
+  subscriptionSchema,
+  avatarSchema,
+};
 
 userSchema.post("save", handleMongooseError);
 const User = model("user", userSchema);

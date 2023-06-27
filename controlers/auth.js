@@ -62,10 +62,21 @@ const updateSubscription = async (req, res, next) => {
   }
   res.json({ data });
 };
+
+const updateAvatar = async (req, res, next) => {
+  const { _id } = req.user;
+  const data = await User.findByIdAndUpdate(_id, req.body);
+  if (!data) {
+    throw HttpError(404, "Not found");
+  }
+  res.json({ data });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
   updateSubscription: ctrlWrapper(updateSubscription),
+  updateAvatar: ctrlWrapper(updateAvatar),
 };
