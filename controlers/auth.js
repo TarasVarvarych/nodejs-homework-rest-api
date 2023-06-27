@@ -53,7 +53,6 @@ const updateSubscription = async (req, res, next) => {
   if (!data) {
     throw HttpError(404, "Not found");
   }
-  console.log(data);
   res.json({ data });
 };
 module.exports = {
