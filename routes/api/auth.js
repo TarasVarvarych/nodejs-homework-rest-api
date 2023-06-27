@@ -9,7 +9,7 @@ router.post("/login", validateBody(schemas.loginSchema), ctrl.login);
 router.post("/logout", authenticate, ctrl.logout);
 router.get("/current", authenticate, ctrl.getCurrent);
 router.patch(
-  "/current/subscription",
+  "/subscription",
   authenticate,
   validateBody(schemas.subscriptionSchema),
   ctrl.updateSubscription
