@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const gravatar = require("gravatar");
 const { User } = require("../models/user");
 const { ctrlWrapper, HttpError } = require("../helpers");
 const { SECRET_KEY } = process.env;
@@ -11,7 +12,13 @@ const register = async (req, res) => {
     throw HttpError(409, "Email already in use");
   }
   const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = await User.create({ ...req.body, password: hashedPassword });
+  const avatarURL = gravatar.url(email);
+
+  const newUser = await User.create({
+    ...req.body,
+    password: hashedPassword,
+    avatarURL,
+  });
   res.status(201).json({
     email: newUser.email,
     name: newUser.name,

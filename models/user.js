@@ -5,20 +5,26 @@ const { handleMongooseError } = require("../helpers");
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const userSchema = new Schema(
   {
-    password: {
+    name: {
       type: String,
-      required: [true, "Set password for user"],
+      required: true,
     },
+
     email: {
       type: String,
       required: [true, "Email is required"],
       unique: true,
+    },
+    password: {
+      type: String,
+      required: [true, "Set password for user"],
     },
     subscription: {
       type: String,
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
+    avatarURL: { type: String, required: true },
     token: String,
   },
   { versionKey: false, timestamps: true }
