@@ -49,7 +49,7 @@ const subscriptionSchema = Joi.object({
 //   avatarURL: Joi.string().required(),
 // });
 
-const schemas = {
+const userSchemas = {
   registerSchema,
   loginSchema,
   subscriptionSchema,
@@ -58,4 +58,4 @@ const schemas = {
 userSchema.post("save", handleMongooseError);
 const User = model("user", userSchema);
 
-module.exports = { User, schemas };
+module.exports = { User, userSchemas };

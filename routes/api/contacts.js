@@ -1,7 +1,7 @@
 const express = require("express");
 
 const ctrl = require("../../controlers/contacts");
-const { shemas } = require("../../models/contact");
+const { contactSchemas } = require("../../models");
 const { validateBody, isValidId, authenticate } = require("../../middlewares");
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.get("/:contactId", authenticate, isValidId, ctrl.getOneContactById);
 router.post(
   "/",
   authenticate,
-  validateBody(shemas.addContactShema),
+  validateBody(contactSchemas.addContactShema),
   ctrl.addOneContact
 );
 
@@ -22,14 +22,14 @@ router.put(
   "/:contactId",
   authenticate,
   isValidId,
-  validateBody(shemas.addContactShema),
+  validateBody(contactSchemas.addContactShema),
   ctrl.updateContact
 );
 router.patch(
   "/:contactId/favorite",
   authenticate,
   isValidId,
-  validateBody(shemas.updateFavoriteShema),
+  validateBody(contactSchemas.updateFavoriteShema),
   ctrl.updateFavoriteContact
 );
 

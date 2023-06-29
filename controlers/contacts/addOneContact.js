@@ -1,5 +1,5 @@
 const { HttpError, ctrlWrapper } = require("../../helpers");
-const { Contact } = require("../../models/contact");
+const { Contact } = require("../../models");
 
 const addOneContact = async (req, res, next) => {
   const { _id: owner } = req.user;

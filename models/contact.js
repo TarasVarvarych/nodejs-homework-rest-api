@@ -35,6 +35,6 @@ const addContactShema = Joi.object({
   favorite: Joi.boolean(),
 });
 const updateFavoriteShema = Joi.object({ favorite: Joi.boolean().required() });
-const shemas = { addContactShema, updateFavoriteShema };
+const contactSchemas = { addContactShema, updateFavoriteShema };
 const Contact = model("contact", contactSchema);
-module.exports = { Contact, shemas };
+module.exports = { Contact, contactSchemas };
