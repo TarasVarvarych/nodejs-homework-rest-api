@@ -9,6 +9,12 @@ router.post(
   validateBody(userSchemas.registerSchema),
   ctrl.register
 );
+router.get("/verify/:verificationToken", ctrl.verifyEmail);
+router.post(
+  "/verify",
+  validateBody(userSchemas.verifySchema),
+  ctrl.resendVerification
+);
 router.post("/login", validateBody(userSchemas.loginSchema), ctrl.login);
 router.post("/logout", authenticate, ctrl.logout);
 router.get("/current", authenticate, ctrl.getCurrent);
