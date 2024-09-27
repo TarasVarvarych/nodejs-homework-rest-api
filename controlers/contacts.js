@@ -1,28 +1,21 @@
-const Joi = require("joi");
-
-const {
-  listContacts,
-  getContactById,
-  addContact,
-  removeContact,
-  editContact,
-} = require("../models/contacts");
-const { HttpError, ctrlWrapper } = require("../helpers");
-
-const contactShema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  phone: Joi.string().required(),
-});
+const { Contact } = require("../models/contact");
+const { ctrlWrapper, HttpError } = require("../helpers");
 
 const getAllContacts = async (req, res, next) => {
-  const data = await listContacts();
+  const { _id: owner } = req.user;
+  const { page = 1, limit = 10 } = req.query;
+  const skip = (page - 1) * limit;
+  const data = await Contact.find({ owner }, "-createdAt -updatedAt", {
+    skip,
+    limit,
+  });
+
   res.json(data);
 };
 
 const getOneContactById = async (req, res, next) => {
   const { contactId } = req.params;
-  const data = await getContactById(contactId);
+  const data = await Contact.findById(contactId);
   if (!data) {
     throw HttpError(404, "Not found");
   }
@@ -30,30 +23,41 @@ const getOneContactById = async (req, res, next) => {
 };
 
 const addOneContact = async (req, res, next) => {
-  const { error } = contactShema.validate(req.body);
-  if (error) {
-    throw HttpError(400, error.message);
+  const { _id: owner } = req.user;
+  const data = await Contact.create({ ...req.body, owner });
+
+  if (!data) {
+    throw HttpError(404, "Not found");
   }
-  const data = await addContact(req.body);
   res.status(201).json(data);
 };
 
 const deleteContact = async (req, res, next) => {
   const { contactId } = req.params;
-  const data = await removeContact(contactId);
+  const data = await Contact.findByIdAndDelete(contactId);
+  if (!data) {
+    throw HttpError(404, "Not found");
+  }
+
+  res.json(data);
+};
+
+const updateContact = async (req, res, next) => {
+  const { contactId } = req.params;
+  const data = await Contact.findByIdAndUpdate(contactId, req.body, {
+    new: true,
+  });
   if (!data) {
     throw HttpError(404, "Not found");
   }
   res.json(data);
 };
 
-const updateContact = async (req, res, next) => {
+const updateFavoriteContact = async (req, res, next) => {
   const { contactId } = req.params;
-  const { error } = contactShema.validate(req.body);
-  if (error) {
-    throw HttpError(400, error.message);
-  }
-  const data = await editContact(contactId, req.body);
+  const data = await Contact.findByIdAndUpdate(contactId, req.body, {
+    new: true,
+  });
   if (!data) {
     throw HttpError(404, "Not found");
   }
@@ -66,4 +70,5 @@ module.exports = {
   addOneContact: ctrlWrapper(addOneContact),
   deleteContact: ctrlWrapper(deleteContact),
   updateContact: ctrlWrapper(updateContact),
+  updateFavoriteContact: ctrlWrapper(updateFavoriteContact),
 };
